@@ -1,0 +1,7 @@
+- README.md
+- requirements.txt  # pyproject.toml
+- .gitignore
+- app.py            # application principale
+- model.py          # logique du modele IA
+- data/
+    - .gitkeep      # pour gqrder le dossier dans GIT
