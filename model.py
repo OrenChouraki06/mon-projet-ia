@@ -1,43 +1,64 @@
-import re
+from typing import Dict, Any
 
-POSITIVE_WORDS = {
-    'good', 'great', 'excellent', 'amazing', 'wonderful', 'fantastic', 'positive', 'happy', 'love'
-}
-NEGATIVE_WORDS = {
-    'bad', 'terrible', 'awful', 'horrible', 'negative', 'sad', 'hate', 'worst', 'disappointing'
-}
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
 
-def normalize_text(text):
-    """ Normalize the input text by converting it to lowercase and removing non alphanumeric characters."""
+# cache model in memory
+_model = None
 
-    text = text.lower()
-    text = re.sub(r'[^a-z0-9\s]', '', text)
+def train_dummy_model() -> Pipeline:
+    """
+    Train a dummy model for demonstration purposes.
+    In a real application, you would load a pre-trained model from disk.
+    """
+    # Sample training data
+    texts = [
+        "I love this product!",
+        "This is the worst experience I've ever had.",
+        "Amazing service and great quality.",
+        "I will never buy this again.",
+        "Highly recommend to everyone!",
+        "Terrible, do not waste your money."
+    ]
+    labels = [1, 0, 1, 0, 1, 0]  # 1 for positive, 0 for negative
 
-    words = re.findall(r'\w+', text, flags=re.UNICODE)
-    return words
+    # Create a pipeline with TfidfVectorizer and LogisticRegression
+    pipeline = Pipeline([
+        ('tfidf', TfidfVectorizer()),
+        ('clf', LogisticRegression())
+    ])
 
-def predict_sentiment(text):
-    """ Predict the sentiment of the input text based on the presence of positive and negative words."""
+    # Train the model
+    pipeline.fit(texts, labels)
 
-    words = normalize_text(text)
+    return pipeline
 
-    positive_words = [word for word in words if word in POSITIVE_WORDS]
-    negative_words = [word for word in words if word in NEGATIVE_WORDS]
+def get_model() -> Pipeline:
+    """
+    Get the trained model. If the model is not already trained, train it.
+    """
+    global _model
+    if _model is None:
+        _model = train_dummy_model()
+    return _model
 
-    positive_count = len(positive_words)
-    negative_count = len(negative_words)
+def predict_sentiment(text: str) -> Dict[str, Any]:
+    """
+    Predict the sentiment of the given text using the trained model.
+    """
+    model = get_model()
+    classes = model.classes_
 
-    if positive_count > negative_count:
-        label = "positive"
-    elif negative_count > positive_count:
-        label = "negative"
-    else:
-        label = "neutral"
+    prediction = model.predict_proba([text])[0]
+
+    best_idx = prediction.argmax()
+    label = classes[best_idx]
+    confidence = float(prediction[best_idx])
 
     return {
-        "label": label,
-        "details" : {
-            "positive_words": positive_words,
-            "negative_words": negative_words
-        }
+        "text": text,
+        "label": int(label),
+        "confidence": confidence,
+        "predictions": {str(cls): float(pred) for cls, pred in zip(classes, prediction)}
     }
