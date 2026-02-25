@@ -12,7 +12,7 @@ def home():
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    return {"status": "healthy", "message": "The API is up and running!"}
+    return jsonify({"status": "healthy", "message": "The API is up and running!", "config": "uv+pyproject.toml"})
 
 @app.route('/predict', methods=['POST'])
 def predict():
