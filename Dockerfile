@@ -6,13 +6,14 @@ WORKDIR /app
 # install uv
 RUN pip install --no-cache-dir uv
 
-# install dependencies in uv generated environment
 COPY pyproject.toml ./
 # COPY uv.lock ./
-RUN uv sync --no-dev
 
 # Copy the rest of the application code
 COPY . .
+
+# install dependencies in uv generated environment
+RUN uv sync --no-dev
 
 # Variable environment flask
 ENV FLASK_APP=app.py
