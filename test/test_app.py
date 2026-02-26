@@ -23,7 +23,7 @@ def test_predict_route_ok():
 
     data = response.get_json()
     assert "label" in data, "Response should contain 'label' key"
-    assert isinstance(data["label"], str), "'label' should be a string"
+    assert isinstance(data["label"], int), "'label' should be an integer"
     assert "confidence" in data, "Response should contain 'confidence' key"
     assert isinstance(data["confidence"], float), "'confidence' should be a float"
     assert "predictions" in data, "Response should contain 'predictions' key"
