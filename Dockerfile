@@ -24,4 +24,4 @@ ENV FLASK_RUN_PORT=5003
 EXPOSE 5003
 
 # Run the Flask application using uv 
-CMD ["uv", "run", "flask", "run"]
+CMD ["uv", "run", "fastapi", "dev", "app/main.py"]

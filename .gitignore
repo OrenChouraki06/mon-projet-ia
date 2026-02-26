@@ -3,6 +3,7 @@
 
 # Python cache
 __pycache__/
+app/__pycache__/
 test/__pycache__/
 
 # uv cache
@@ -10,3 +11,12 @@ uv.lock
 
 # pytest
 .pytest_cache/
+
+# model files (do not send to github)
+model/
+model/*
+
+# other
+notes/
+notes/*
+
