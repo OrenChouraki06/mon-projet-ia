@@ -3,6 +3,10 @@
 
 # Python cache
 __pycache__/
+test/__pycache__/
 
 # uv cache
 uv.lock
+
+# pytest
+.pytest_cache/
