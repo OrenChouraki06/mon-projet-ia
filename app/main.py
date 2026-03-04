@@ -1,14 +1,14 @@
 # import des librairies
+import numpy as np
+from typing import Dict
+
 import fastapi
 from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
-from pydantic import BaseModel
-import numpy as np
+
+from schema import ImagePrediction, SentimentPrediction, SentimentRequest
 
 from model_image import load_model, predict
 from preprocess_image import preprocess_image
-
-from typing import Dict
-
 from model_bert import Model, get_model
 
 # creatiobn de l'instance de l'application FastAPI
@@ -16,18 +16,6 @@ app = FastAPI()
 
 # chargement du modèle au demarrage de l'application
 model = load_model("model/model_alyra_0.1.0.h5")
-
-class ImagePrediction(BaseModel):
-    Number: int
-    Proba: dict
-
-class SentimentPrediction(BaseModel):
-    Proba: Dict[str, float]
-    Sentiment: str
-    Confidence: float
-
-class SentimentRequest(BaseModel):
-    text: str
 
 # creation des routes de l'API
 @app.get("/")
