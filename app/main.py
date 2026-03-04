@@ -1,10 +1,7 @@
 # import des librairies
 import numpy as np
-from typing import Dict
 
-import fastapi
 from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
-
 from schema import ImagePrediction, SentimentPrediction, SentimentRequest
 
 from model_image import load_model, predict
