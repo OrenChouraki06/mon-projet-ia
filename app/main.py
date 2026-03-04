@@ -4,8 +4,8 @@ from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
 from pydantic import BaseModel
 import numpy as np
 
-from model import load_model, predict
-from preprocess import preprocess_image
+from model_image import load_model, predict
+from preprocess_image import preprocess_image
 
 from typing import Dict
 
